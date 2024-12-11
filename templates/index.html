@@ -1,0 +1,434 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+    <main>
+        <!-- slider Area Start-->
+        <section class="slider-area ">
+            <div class="slider-active">
+                <!-- Single Slider -->
+                <div class="single-slider slider-bg1 slider-height d-flex align-items-center">
+                    <div class="container">
+                        <div class="rowr">
+                            <div class="col-xxl-5 col-xl-6 col-lg-7 col-md-8  col-sm-10">
+                                <div class="hero-caption text-center">
+                                    <span>Fashion Sale</span>
+                                    <h1 data-animation="bounceIn" data-delay="0.2s">Mens Style</h1>
+                                    <p data-animation="fadeInUp" data-delay="0.4s">Consectetur adipisicing elit. Laborum
+                                        fuga incidunt laboriosam voluptas iure, delectus dignissimos facilis neque nulla
+                                        earum.</p>
+                                    <a href="{% url 'categories' %}?category=Men" class="btn_1 hero-btn"
+                                       data-animation="fadeInUp"
+                                       data-delay="0.7s">Shop
+                                        Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Slider -->
+                <div class="single-slider slider-bg2 slider-height d-flex align-items-center">
+                    <div class="container">
+                        <div class="row justify-content-end">
+                            <div class="col-xxl-5 col-xl-6 col-lg-7 col-md-8 col-sm-10">
+                                <div class="hero-caption text-center">
+                                    <span>Fashion Sale</span>
+                                    <h1 data-animation="bounceIn" data-delay="0.2s">Womens Style</h1>
+                                    <p data-animation="fadeInUp" data-delay="0.4s">Consectetur adipisicing elit. Laborum
+                                        fuga incidunt laboriosam voluptas iure, delectus dignissimos facilis neque nulla
+                                        earum.</p>
+                                    <a href="{% url 'categories' %}?category=Women" class="btn_1 hero-btn"
+                                       data-animation="fadeInUp" data-delay="0.7s">Shop
+                                        Now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- slider Area End-->
+        <!-- items Product 1  Start-->
+        <section class="items-product1 pt-30">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-items mb-20">
+                            <div class="items-img">
+                                <img src="{% static 'img/gallery/items1.jpg' %}" alt="">
+                            </div>
+                            <div class="items-details">
+                                <h4><a href="{% url 'categories' %}?category=Men">Men's Fashion</a></h4>
+                                <a href="{% url 'categories' %}?category=Men" class="browse-btn">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-items mb-20">
+                            <div class="items-img">
+                                <img src="{% static 'img/gallery/items2.jpg' %}" alt="">
+                            </div>
+                            <div class="items-details">
+                                <h4><a href="{% url 'categories' %}?category=Women">Women's Fashion</a></h4>
+                                <a href="{% url 'categories' %}?category=Women" class="browse-btn">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                        <div class="single-items mb-20">
+                            <div class="items-img">
+                                <img src="{% static 'img/gallery/items3.jpg' %}" alt="">
+                            </div>
+                            <div class="items-details">
+                                <h4><a href="{% url 'categories' %}?category=Baby">Baby Fashion</a></h4>
+                                <a href="{% url 'categories' %}?category=Baby" class="browse-btn">Shop Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--items Product  End -->
+        <!-- Latest-items Start -->
+        <div class="latest-items section-padding fix">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-xl-12">
+                        <div class="nav-button">
+                            <!--Nav Button  -->
+                            <nav>
+                                <div class="nav-tittle">
+                                    <h2>Trending This Week</h2>
+                                </div>
+                            </nav>
+                            <!--End Nav Button  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <!-- Nav Card -->
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
+                        <!-- Tab 1 -->
+                        <div class="latest-items-active">
+                            <!-- Single -->
+                            {% for trend in trending %}
+                                <div class="properties pb-30">
+                                    <div class="properties-card">
+                                        <div class="properties-img">
+                                            <a href="{% url 'product_detail' trend.id %}"><img
+                                                    style="width: 300px; height: 450px"
+                                                    src="{{ trend.image.url }}"
+                                                    alt=""></a>
+                                            {% if trend.discount == 0 %}
+                                                <span></span><br>
+                                                {% if trend.product_quantity == 0 %}
+                                                    <div>
+                                                        <img style="position: relative; bottom: 478px; width: 200px"
+                                                             src="{% static 'img/logo/soldout.png' %}" alt="">
+                                                    </div>
+                                                {% else %}
+                                                {% endif %}
+                                            {% else %}
+                                                <div style="color: white; background: red; width: 45px; height: 23px; text-align: center; border-radius: 5px; position: relative; top: -440px; left: 245px;">
+                                                    -{{ trend.discount }}%
+                                                </div>
+                                                {% if trend.product_quantity == 0 %}
+                                                    <div>
+                                                        <img style="position: relative; bottom: 476px; width: 200px"
+                                                             src="{% static 'img/logo/soldout.png' %}" alt="">
+                                                    </div>
+                                                {% else %}
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if trend.product_quantity == 0 %}
+                                                <div style="margin-bottom: 200px" class="socal_icon">
+                                                    <a href="{% url 'like' trend.id %}">
+                                                        {% if trend.id in liked_products %}
+                                                            <ion-icon style="font-size: 30px"
+                                                                      name="heart"></ion-icon>
+                                                        {% else %}
+                                                            <ion-icon style="font-size: 30px"
+                                                                      name="heart-outline"></ion-icon>
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            {% else %}
+                                                <div class="socal_icon">
+                                                    {% if trend.id in cart_items %}
+                                                        <a href="{% url 'add_to_cart' trend.id %}">
+                                                            <ion-icon style="font-size: 30px"
+                                                                      name="cart"></ion-icon>
+                                                        </a>
+                                                    {% else %}
+                                                        <a href="{% url 'add_to_cart' trend.id %}">
+                                                            <ion-icon style="font-size: 30px"
+                                                                      name="cart-outline"></ion-icon>
+                                                        </a>
+                                                    {% endif %}
+                                                    <a href="{% url 'like' trend.id %}">
+                                                        {% if trend.id in liked_products %}
+                                                            <ion-icon style="font-size: 30px"
+                                                                      name="heart"></ion-icon>
+                                                        {% else %}
+                                                            <ion-icon style="font-size: 30px"
+                                                                      name="heart-outline"></ion-icon>
+                                                        {% endif %}
+                                                    </a>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        {% if trend.product_quantity == 0 %}
+                                            <div style="margin-top: -200px"
+                                                 class="properties-caption properties-caption2">
+                                                <h3><a href="{% url 'product_detail' trend.id %}">{{ trend.name }}</a>
+                                                </h3>
+                                                <div class="properties-footer">
+                                                    <div class="price">
+                                                    <span>${{ trend.price_with_discount }}
+                                                        {% if not trend.discount == 0 %}
+                                                            <span>${{ trend.price }}</span>
+                                                        {% else %}
+                                                        {% endif %}
+                                                    </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% else %}
+                                            <div class="properties-caption properties-caption2">
+                                                <h3><a href="{% url 'product_detail' trend.id %}">{{ trend.name }}</a>
+                                                </h3>
+                                                <div class="properties-footer">
+                                                    <div class="price">
+                                                    <span>${{ trend.price_with_discount }}
+                                                        {% if not trend.discount == 0 %}
+                                                            <span>${{ trend.price }}</span>
+                                                        {% else %}
+                                                        {% endif %}
+                                                    </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Latest-items End -->
+        <!-- Testimonial Start -->
+        <div class="testimonial-area testimonial-padding"></div>
+        <!-- Testimonial End -->
+        <!-- Latest-items 02 Start -->
+        <section class="latest-items section-padding fix">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="section-tittle text-center mb-40">
+                        <h2>You May Like</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content" id="nav-tabContent">
+
+                <div class="container">
+                    <div class="latest-items-active">
+                        {% for i in products %}
+                            <!-- Single -->
+                            <div class="properties pb-30">
+                                <div class="properties-card">
+                                    <div class="properties-img">
+                                        <a href="{% url 'product_detail' i.pk %}">
+                                            <img style="width: 300px; height: 450px" src="{{ i.image.url }}"
+                                                 alt="{{ i.name }}">
+                                        </a>
+                                        {% if i.discount == 0 %}
+                                            <span></span><br>
+                                            {% if i.product_quantity == 0 %}
+                                                <div>
+                                                    <img style="position: relative; bottom: 477px; width: 200px;"
+                                                         src="{% static 'img/logo/soldout.png' %}" alt="">
+                                                </div>
+                                            {% else %}
+                                            {% endif %}
+                                        {% else %}
+                                            <div style="color: white; background: red; width: 45px; height: 23px; text-align: center; border-radius: 5px; position: relative; top: -440px; left: 245px;">
+                                                -{{ i.discount }}%
+                                            </div>
+                                            {% if i.product_quantity == 0 %}
+                                                <div>
+                                                    <img style="position: relative; bottom: 475px; width: 200px;"
+                                                         src="{% static 'img/logo/soldout.png' %}" alt="">
+                                                </div>
+                                            {% else %}
+                                            {% endif %}
+                                        {% endif %}
+                                        {% if i.product_quantity == 0 %}
+                                            <div style="margin-bottom: 200px" class="socal_icon">
+                                                <a href="{% url 'like' i.id %}">
+                                                    {% if i.id in liked_products %}
+                                                        <ion-icon style="font-size: 30px" name="heart"></ion-icon>
+                                                    {% else %}
+                                                        <ion-icon style="font-size: 30px"
+                                                                  name="heart-outline"></ion-icon>
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                        {% else %}
+                                            <div class="socal_icon">
+                                                {% if i.id in cart_items %}
+                                                    <a href="{% url 'add_to_cart' i.id %}">
+                                                        <ion-icon style="font-size: 30px" name="cart"></ion-icon>
+                                                    </a>
+                                                {% else %}
+                                                    <a href="{% url 'add_to_cart' i.id %}">
+                                                        <ion-icon style="font-size: 30px"
+                                                                  name="cart-outline"></ion-icon>
+                                                    </a>
+                                                {% endif %}
+                                                <a href="{% url 'like' i.id %}">
+                                                    {% if i.id in liked_products %}
+                                                        <ion-icon style="font-size: 30px" name="heart"></ion-icon>
+                                                    {% else %}
+                                                        <ion-icon style="font-size: 30px"
+                                                                  name="heart-outline"></ion-icon>
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    {% if i.product_quantity == 0 %}
+                                        <div style="margin-top: -200px" class="properties-caption properties-caption2">
+                                            <h3><a href="{% url 'product_detail' i.id %}">{{ i.name }}</a></h3>
+                                            <div class="properties-footer">
+                                                <div class="price">
+                                                <span>${{ i.price_with_discount }}
+                                                    {% if not i.discount == 0 %}
+                                                        <span>${{ i.price }}</span>
+                                                    {% else %}
+                                                    {% endif %}
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="properties-caption properties-caption2">
+                                            <h3><a href="{% url 'product_detail' i.id %}">{{ i.name }}</a></h3>
+                                            <div class="properties-footer">
+                                                <div class="price">
+                                                <span>${{ i.price_with_discount }}
+                                                    {% if not i.discount == 0 %}
+                                                        <span>${{ i.price }}</span>
+                                                    {% else %}
+                                                    {% endif %}
+                                                </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- End Single -->
+                        {% empty %}
+                            <p>Please edit your Gender in Profile to suggest you our Products</p>
+                        {% endfor %}
+                    </div>
+
+                </div>
+        </section>
+        <!-- Latest-items End -->
+        <!-- Home Blog Start -->
+        <section class="home-blog">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="cl-xl-7 col-lg-8 col-md-10">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-40">
+                            <h2>Latest News</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for post in posts %}
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="single-blogs mb-30">
+                                <div class="blog-img">
+                                    <a href="{% url 'blog_details' post.pk %}"><img style="width: 400px; height: 500px;"
+                                                                                    src="{{ post.image.url }}"
+                                                                                    alt=""></a>
+                                </div>
+                                <div class="blogs-cap">
+                                    <span><i class="fa">&#xf022</i> {{ post.categories.name }}</span>
+                                    <h5><a href="{% url 'blog_details' post.pk %}">{{ post.title|truncatechars:25 }}</a>
+                                    </h5>
+                                    <p>{{ post.description|truncatechars:100 }}</p>
+                                    <a href="{% url 'blog_details' post.pk %}" class="red-btn">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <!-- Home Blog End -->
+        <!-- Services Area Start -->
+        <div class="categories-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cat mb-50 wow fadeInUp text-center" data-wow-duration="1s"
+                             data-wow-delay=".2s">
+                            <div class="cat-icon">
+                                <img src="{% static 'img/icon/services1.svg' %}" alt="">
+                            </div>
+                            <div class="cat-cap">
+                                <h5>Fast & Free Delivery</h5>
+                                <p>Free delivery on all orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cat mb-50 wow fadeInUp text-center" data-wow-duration="1s"
+                             data-wow-delay=".2s">
+                            <div class="cat-icon">
+                                <img src="{% static 'img/icon/services2.svg' %}" alt="">
+                            </div>
+                            <div class="cat-cap">
+                                <h5>Secure Payment</h5>
+                                <p>Free delivery on all orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cat mb-50 wow fadeInUp text-center" data-wow-duration="1s"
+                             data-wow-delay=".4s">
+                            <div class="cat-icon">
+                                <img src="{% static 'img/icon/services3.svg' %}" alt="">
+                            </div>
+                            <div class="cat-cap">
+                                <h5>Money Back Guarantee</h5>
+                                <p>Free delivery on all orders</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-cat mb-50 wow fadeInUp text-center" data-wow-duration="1s"
+                             data-wow-delay=".5s">
+                            <div class="cat-icon">
+                                <img src="{% static 'img/icon/services4.svg' %}" alt="">
+                            </div>
+                            <div class="cat-cap">
+                                <h5>Online Support</h5>
+                                <p>Free delivery on all orders</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Services Area End -->
+    </main>
+
+{% endblock %}

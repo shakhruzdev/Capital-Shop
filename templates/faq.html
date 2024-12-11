@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - Capital Shop</title>
+    <style>
+        html, body {
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .faq-item {
+            background: #fff;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .faq-item h2 {
+            font-size: 1.2rem;
+            color: #ff0000;
+            margin: 0 0 0.5rem;
+        }
+
+        .faq-item p {
+            margin: 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Frequently Asked Questions</h1>
+    <p>Find answers to common questions about Capital Shop.</p>
+</header>
+<div class="container">
+    <div class="faq-item">
+        <h2>1. What is Capital Shop?</h2>
+        <p>Capital Shop is an e-commerce platform designed to provide a seamless shopping experience. It's also a
+            portfolio project showcasing the developer's expertise in web development.</p>
+    </div>
+    <div class="faq-item">
+        <h2>2. Do you process real payments?</h2>
+        <p>No, this is a portfolio project and does not process real transactions. All payment features are for
+            demonstration purposes only.</p>
+    </div>
+    <div class="faq-item">
+        <h2>3. How can I contact you?</h2>
+        <p>You can reach us via email at <a href="mailto:shaislamovshakhruz@gmail.com">shaislamovshakhruz@gmail.com</a>.
+            Feel free to
+            share feedback or ask questions!</p>
+    </div>
+    <div class="faq-item">
+        <h2>4. Can I see more of your work?</h2>
+        <p>Absolutely! Visit our <a href="https://github.com/shakhruzdev" target="_blank">GitHub</a> or <a
+                href="https://www.linkedin.com/in/shakhruz-shaislamov-b26065301/" target="_blank">LinkedIn</a> for more
+            projects.</p>
+    </div>
+    <div class="faq-item">
+        <h2>5. How do I filter products?</h2>
+        <p>You can use the filtering options on the product pages to sort items by type, size, color, genre, brand, or
+            price.</p>
+    </div>
+    <div class="faq-item">
+        <h2>6. Will my personal information be safe?</h2>
+        <p>Absolutely. We follow strict security measures to protect your data. For more details, visit our <a
+                href="{% url 'privacy_policy' %}">Privacy Policy</a>.</p>
+    </div>
+</div>
+<footer>
+    <p>&copy; 2024 Capital Shop. Built with ❤️ by <strong>shakhruz_dev</strong>.</p>
+</footer>
+</body>
+</html>

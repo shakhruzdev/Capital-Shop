@@ -1,0 +1,276 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main>
+        <!-- Hero area Start-->
+        <div class="hero-area section-bg2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="slider-area">
+                            <div class="slider-height2 slider-bg4 d-flex align-items-center justify-content-center">
+                                <div class="hero-caption hero-caption2">
+                                    <h2>Category</h2>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb justify-content-center">
+                                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="/categories/">Category</a></li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Hero area End -->
+        <!-- listing Area Start -->
+        <div class="listing-area pt-50 pb-50">
+            <div class="container">
+                <div class="row">
+                    <!--? Left content -->
+                    <div class="col-xl-3 col-lg-4 col-md-4">
+                        <form class="form-contact contact_form" action="" method="POST">
+                            {% csrf_token %}
+                            <!-- Job Category Listing start -->
+                            <div class="category-listing mb-50">
+                                <!-- single one -->
+                                <div class="single-listing">
+                                    <!-- select-Categories  -->
+                                    <div class="select-Categories pb-30">
+                                        <div class="select-job-items2 mb-30">
+                                            <div class="col-xl-12">
+                                                <select name="size">
+                                                    <option value="">Size</option>
+                                                    {% for size in sizes %}
+                                                        <option value="{{ size.name }}">{{ size.name }}</option>
+                                                    {% empty %}
+                                                        <option value="">There aren't any sizes yet</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="select-job-items2 mb-30">
+                                            <div class="col-xl-12">
+                                                <select name="color">
+                                                    <option value="">Color</option>
+                                                    {% for color in colors %}
+                                                        <option value="{{ color.name }}">{{ color.name }}</option>
+                                                    {% empty %}
+                                                        <option value="">There aren't any colors yet</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- select-Categories End -->
+                                    <!-- Range Slider Start -->
+                                    <aside class="left_widgets p_filter_widgets price_rangs_aside sidebar_box_shadow mb-40">
+                                        <div class="small-tittle">
+                                            <h4>Filter by Price</h4>
+                                        </div>
+                                        <div class="widgets_inner">
+                                            <div class="range_item">
+                                                <input type="text" class="js-range-slider" name="range" value="amount"/>
+                                                <div class="d-flex align-items-center">
+                                                    <div class="price_value d-flex justify-content-center">
+                                                        <input type="text" class="js-input-from" id="amount_from"
+                                                               name="from_amount" readonly/>
+                                                        <span>to</span>
+                                                        <input type="text" class="js-input-to" id="to_amount"
+                                                               name="to_amount" readonly/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </aside>
+                                    <!-- range end -->
+                                    <!-- select-Categories  -->
+                                    <div class="select-Categories pb-30">
+                                        <div class="small-tittle mb-20">
+                                            <h4>Filter by Genres</h4>
+                                        </div>
+                                        {% for genre in genres %}
+                                            <label class="container">{{ genre.name }}
+                                                <input type="checkbox" name="genres" value="{{ genre.name }}">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        {% empty %}
+                                            <label class="container">There aren't any colors yet</label>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- select-Categories End -->
+                                    <!-- select-Categories start -->
+                                    <div class="select-Categories pb-20">
+                                        <div class="small-tittle mb-20">
+                                            <h4>Filter by Brand</h4>
+                                        </div>
+                                        {% for brand in brands %}
+                                            <label class="container">{{ brand.name }}
+                                                <input type="checkbox" name="brands" value="{{ brand.name }}">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        {% endfor %}
+                                    </div>
+                                    <!-- select-Categories End -->
+                                </div>
+
+                            </div>
+                            <div style="text-align: center" class="form-group">
+                                <button type="submit" class="button button-contactForm btn_1 boxed-btn">
+                                    Filter product
+                                </button>
+                            </div>
+                        </form>
+                        <!-- Job Category Listing End -->
+                    </div>
+                    <!--?  Right content -->
+                    <div class="col-xl-9 col-lg-8 col-md-8">
+                        <div class="latest-items latest-items2">
+                            <div class="row">
+                                {% for product in products %}
+                                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+                                        <div class="properties pb-30">
+                                            <div class="properties-card">
+                                                <div class="properties-img">
+                                                    <a href="{% url 'product_detail' product.pk %}"><img
+                                                            style="height: 430px"
+                                                            src="{{ product.image.url }}" alt=""></a>
+                                                    {% if product.discount == 0 %}
+                                                        <span></span><br><br>
+                                                        {% if product.product_quantity == 0 %}
+                                                            <div>
+                                                                <img style="position: relative; bottom: 458px; width: 200px; right: 41px"
+                                                                     src="{% static 'img/logo/soldout.png' %}" alt="">
+                                                            </div>
+                                                        {% else %}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <div style="color: white; background: red; width: 45px; height: 23px; text-align: center; border-radius: 5px; position: relative; top: -420px; left: 225px;">
+                                                            -{{ product.discount }}%
+                                                        </div>
+                                                        {% if product.product_quantity == 0 %}
+                                                            <div>
+                                                                <img style="position: relative; bottom: 460px; width: 200px; right: 41px"
+                                                                     src="{% static 'img/logo/soldout.png' %}" alt="">
+                                                            </div>
+                                                        {% else %}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if product.product_quantity == 0 %}
+                                                        <div style="margin-bottom: 200px" class="socal_icon">
+                                                            <a href="{% url 'like' product.id %}">
+                                                                {% if product.id in liked_products %}
+                                                                    <ion-icon style="font-size: 30px"
+                                                                              name="heart"></ion-icon>
+                                                                {% else %}
+                                                                    <ion-icon style="font-size: 30px"
+                                                                              name="heart-outline"></ion-icon>
+                                                                {% endif %}
+                                                            </a>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="socal_icon">
+                                                            {% if product.id in cart_items %}
+                                                                <a href="{% url 'add_to_cart' product.id %}">
+                                                                    <ion-icon style="font-size: 30px"
+                                                                              name="cart"></ion-icon>
+                                                                </a>
+                                                            {% else %}
+                                                                <a href="{% url 'add_to_cart' product.id %}">
+                                                                    <ion-icon style="font-size: 30px"
+                                                                              name="cart-outline"></ion-icon>
+                                                                </a>
+                                                            {% endif %}
+                                                            <a href="{% url 'like' product.id %}">
+                                                                {% if product.id in liked_products %}
+                                                                    <ion-icon style="font-size: 30px"
+                                                                              name="heart"></ion-icon>
+                                                                {% else %}
+                                                                    <ion-icon style="font-size: 30px"
+                                                                              name="heart-outline"></ion-icon>
+                                                                {% endif %}
+                                                            </a>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                                {% if product.product_quantity == 0 %}
+                                                    <div style="margin-top: -200px"
+                                                         class="properties-caption properties-caption2">
+                                                        <h3>
+                                                            <a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a>
+                                                        </h3>
+                                                        <div class="properties-footer">
+                                                            {% if product.discount != 0 %}
+                                                                <div class="price">
+                                                                    <span>${{ product.price_with_discount }} <span>${{ product.price }}</span></span>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="price">
+                                                                    <span>${{ product.price }}</span>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="properties-caption properties-caption2">
+                                                        <h3>
+                                                            <a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a>
+                                                        </h3>
+                                                        <div class="properties-footer">
+                                                            {% if product.discount != 0 %}
+                                                                <div class="price">
+                                                                    <span>${{ product.price_with_discount }} <span>${{ product.price }}</span></span>
+                                                                </div>
+                                                            {% else %}
+                                                                <div class="price">
+                                                                    <span>${{ product.price }}</span>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <nav class="blog-pagination justify-content-center d-flex">
+                                    <ul class="pagination">
+                                        {% if products.has_previous %}
+                                            <li class="page-item">
+                                                <a href="?{% for key, value in request.GET.items %}{% if key != "page" %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.previous_page_number }}"
+                                                   class="page-link"
+                                                   aria-label="Previous">
+                                                    <i class="ti-angle-left"></i>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for num in products.paginator.page_range %}
+                                            <li class="page-item {% if num == products.number %}active{% endif %}">
+                                                <a href="?{% for key, value in request.GET.items %}{% if key != "page" %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}"
+                                                   class="page-link">{{ num }}</a>
+                                            </li>
+                                        {% endfor %}
+                                        {% if products.has_next %}
+                                            <li class="page-item">
+                                                <a href="?{% for key, value in request.GET.items %}{% if key != "page" %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.next_page_number }}"
+                                                   class="page-link"
+                                                   aria-label="Next">
+                                                    <i class="ti-angle-right"></i>
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- listing-area Area End -->
+    </main>
+{% endblock %}

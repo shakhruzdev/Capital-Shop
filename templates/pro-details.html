@@ -1,0 +1,281 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+    {#    <style>#}
+    {#        .rating-wrapper input {#}
+    {#            display: none;#}
+    {#        }#}
+    {##}
+    {#        .rating-wrapper label {#}
+    {#            font-size: 24px;#}
+    {#            color: lightgray;#}
+    {#            cursor: pointer;#}
+    {#            margin: 0;#}
+    {#        }#}
+    {##}
+    {#        .rating-wrapper input:checked ~ label {#}
+    {#            color: gold;#}
+    {#        }#}
+    {##}
+    {#        .rating-wrapper input:checked ~ label ~ label {#}
+    {#            color: gold;#}
+    {#        }#}
+    {#    </style>#}
+    <style>
+        .rating-wrapper {
+            display: flex; /* Aligns stars horizontally */
+            direction: rtl; /* Ensures left-to-right direction */
+        }
+
+        .rating-wrapper input {
+            display: none; /* Hides the radio buttons */
+        }
+
+        .rating-wrapper label {
+            font-size: 24px;
+            color: lightgray; /* Default color for stars */
+            cursor: pointer;
+            margin: 0; /* No space between stars */
+        }
+
+        /* Fill stars up to and including the checked one */
+        .rating-wrapper input:checked ~ label {
+            color: gold; /* Color for selected stars */
+        }
+
+        /* Fill stars up to and including the checked one */
+        .rating-wrapper input:checked ~ label ~ label {
+            color: gold; /* Color for previously selected stars */
+        }
+
+        .stars-container {
+            display: flex; /* Aligns items horizontally */
+            flex-direction: column; /* Aligns items vertically */
+            align-items: flex-start; /* Aligns items to the left */
+            margin-top: 10px; /* Space above stars container */
+        }
+
+        .stars-label {
+            font-weight: bold;
+            margin-bottom: 5px; /* Space between label and stars */
+        }
+    </style>
+
+    <main>
+        <!-- Hero area Start-->
+        <div class="hero-area section-bg2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="slider-area">
+                            <div class="slider-height2 slider-bg4 d-flex align-items-center justify-content-center">
+                                <div class="hero-caption hero-caption2">
+                                    <h2>Product Details</h2>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb justify-content-center">
+                                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="{% url 'product_detail' product.id %}">Product
+                                                Details</a></li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Hero area End -->
+        <!--  services-area start-->
+        <div class="services-area2 pt-50">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <!-- Single -->
+                                <div class="single-services d-flex align-items-center mb-0">
+                                    <div class="features-img">
+                                        <img style="width: 300px; height: 400px" src="{{ product.image.url }}" alt="">
+                                    </div>
+                                    {% if product.discount == 0 %}
+                                        <span></span>
+                                    {% else %}
+                                        <div style="color: black; background: yellow; width: 55px; height: 25px; text-align: center; border-radius: 5px; position: relative; top: -200px; left: 820px;">
+                                            -{{ product.discount }}%
+                                        </div>
+                                    {% endif %}
+                                    <div class="features-caption">
+                                        <h3>{{ product.name }}</h3>
+                                        <p>By {{ product.brand }}</p>
+                                        <div style="display: flex" class="price">
+                                            {% if product.discount != 0 %}
+                                                <span style="margin-right: 20px">${{ product.price_with_discount }} </span>
+                                                <span style="color: lightslategrey; text-decoration-line: line-through">${{ product.price }}</span>
+                                            {% else %}
+                                                <span style="margin-right: 20px">${{ product.price_with_discount }} </span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="review">
+                                            <div class="rating">
+                                                {{ full_star_html|safe }}
+                                                {{ partial_star_html|safe }}
+                                                {{ empty_star_html|safe }}
+                                            </div>
+                                            <p>({{ product.rating_count }} Reviews)</p>
+                                        </div>
+                                        {% if product.product_quantity != 0 %}
+                                            <a href="{% url 'add_to_cart' product.id %}" class="white-btn mr-10">Add to
+                                                Cart</a>
+                                        {% else %}
+                                            <a class="white-btn mr-10">Out Of Stock</a>
+                                        {% endif %}
+                                        <a href="{% url 'like' product.id %}" class="border-btn share-btn">
+                                            {% if product.id in liked_products %}
+                                                <i class="fa-solid fa-heart"></i>
+                                            {% else %}
+                                                <i class="fa-regular fa-heart"></i>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- services-area End-->
+        <!--Books review Start -->
+        <section class="our-client section-padding best-selling">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-1 col-xl-10">
+                        <div class="nav-button f-left">
+                            <!--Nav Button  -->
+                            <nav>
+                                <div class="nav nav-tabs " id="nav-tab" role="tablist">
+                                    <a class="nav-link active" id="nav-one-tab" data-bs-toggle="tab" href="#nav-one"
+                                       role="tab" aria-controls="nav-one" aria-selected="true">Description</a>
+                                    <a class="nav-link" id="nav-three-tab" data-bs-toggle="tab" href="#nav-three"
+                                       role="tab"
+                                       aria-controls="nav-three" aria-selected="false">Comments</a>
+                                </div>
+                            </nav>
+                            <!--End Nav Button  -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <!-- Nav Card -->
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-one" role="tabpanel" aria-labelledby="nav-one-tab">
+                        <!-- Tab 1 -->
+                        <div class="row">
+                            <div class="offset-xl-1 col-lg-9">
+                                <p>{{ product.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="nav-three" role="tabpanel" aria-labelledby="nav-three-tab">
+                        <!-- Tab 3 -->
+                        <div class="row">
+                            <div class="comments-area">
+                                <h4>{{ comments.count }} Comments</h4>
+                                <div class="comment-list">
+                                    {% for comment in comments %}
+                                        <div class="single-comment justify-content-between d-flex">
+                                            <div class="user justify-content-between d-flex">
+                                                <div class="thumb">
+                                                    <img src="{{ comment.user.image.url }}" alt="User image"
+                                                         style="width: 50px; height: 50px;">
+                                                </div>
+                                                <div class="desc">
+                                                    <p class="comment">{{ comment.user.first_name }} {{ comment.user.last_name }}</p>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="d-flex align-items-center">
+                                                            <h5>
+                                                                <p>{{ comment.message }}</p>
+                                                            </h5>
+                                                            <p class="date">{{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                    {% empty %}
+                                        <p>No comments yet.</p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            {% if comment_order %}
+                                {% if commented %}
+                                    <div>You have already commented</div>
+                                {% elif not commented %}
+                                    <div class="comment-form">
+                                        <h4>Leave a Comment</h4>
+                                        <form class="form-contact comment_form" id="commentForm" method="post">
+                                            {% csrf_token %}
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                <textarea class="form-control w-100" name="comment" id="comment"
+                                                          cols="30"
+                                                          rows="9" placeholder="Write Comment" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                {% if not product.id in rated_product %}
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <div class="stars-container">
+                                                                <span class="stars-label">Rate Product:</span>
+                                                                <div class="rating-wrapper">
+                                                                    <input type="radio" id="star-5" name="rating"
+                                                                           value="5"><label for="star-5"
+                                                                                            class="fas fa-star"></label>
+                                                                    <input type="radio" id="star-4" name="rating"
+                                                                           value="4"><label for="star-4"
+                                                                                            class="fas fa-star"></label>
+                                                                    <input type="radio" id="star-3" name="rating"
+                                                                           value="3"><label for="star-3"
+                                                                                            class="fas fa-star"></label>
+                                                                    <input type="radio" id="star-2" name="rating"
+                                                                           value="2"><label for="star-2"
+                                                                                            class="fas fa-star"></label>
+                                                                    <input type="radio" id="star-1" name="rating"
+                                                                           value="1"><label for="star-1"
+                                                                                            class="fas fa-star"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                {% else %}
+                                                {% endif %}
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="submit" class="button button-contactForm btn_1 boxed-btn">
+                                                    Post
+                                                    Comment
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            {% elif not comment_order %}
+                                <div>Buy product to comment</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Books review End -->
+    </main>
+
+    <script></script>
+{% endblock %}

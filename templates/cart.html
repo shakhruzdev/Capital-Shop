@@ -1,0 +1,424 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main>
+        <style>
+            .cart_inner .row {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+            }
+
+            .cart_inner .col-lg-8 {
+                flex: 0 0 65%;
+                padding-right: 30px;
+            }
+
+            .cart_inner .col-lg-4 {
+                flex: 0 0 30%;
+                padding-left: 30px;
+            }
+
+            .order-summary {
+                width: 100%;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                font-family: Arial, sans-serif;
+            }
+
+            .order-summary h3 {
+                font-size: 18px;
+                color: #333;
+                margin-bottom: 10px;
+            }
+
+            .order-summary .item-section {
+                display: flex;
+                justify-content: space-between;
+                font-size: 16px;
+            }
+
+            .order-summary .delivery-date {
+                display: block;
+                text-align: center;
+                margin-top: 10px;
+                padding: 8px;
+                border: 1px solid #9b59b6;
+                border-radius: 5px;
+                color: #9b59b6;
+                font-size: 14px;
+                text-decoration: none;
+            }
+
+            .order-summary .total-section {
+                display: flex;
+                justify-content: space-between;
+                font-weight: bold;
+                font-size: 20px;
+                margin-top: 20px;
+                color: #333;
+            }
+
+            .order-summary .savings {
+                color: #27ae60;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+
+            .order-summary .checkout-btn {
+                display: block;
+                width: 100%;
+                margin-top: 20px;
+                padding: 12px;
+                text-align: center;
+                background-color: red;
+                color: #fff;
+                font-size: 16px;
+                font-weight: bold;
+                border: none;
+                border-radius: 8px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .btn-custom {
+                background-color: white;
+                border: 1px solid white;
+                color: white;
+                padding: 10px 15px;
+                font-size: 16px;
+                border-radius: 4px;
+                cursor: pointer;
+                justify-content: 10px;
+            }
+
+            .btn-custom .fa-trash {
+                color: black;
+                font-size: 18px;
+                margin-left: 40px;
+            }
+
+            .container {
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+            }
+
+            .title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+
+            .message {
+                font-size: 16px;
+                color: #666;
+                margin-bottom: 20px;
+            }
+
+            .button {
+                display: inline-block;
+                padding: 10px 20px;
+                font-size: 16px;
+                color: #fff;
+                background-color: red;
+                border: none;
+                border-radius: 4px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            .product_count {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .input-number {
+                width: 50px;
+                height: 30px;
+                text-align: center;
+                font-size: 16px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                margin: 0 10px;
+            }
+
+            .quantity-btn {
+                background-color: #f1f1f1;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                width: 30px;
+                height: 30px;
+                display: right;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                font-size: 18px;
+                transition: background-color 0.3s;
+            }
+
+            .quantity-btn:hover {
+                background-color: #ddd;
+            }
+
+            .quantity-increase {
+                background-color: white;
+                color: black;
+            }
+
+            .quantity-decrease {
+                background-color: white;
+                color: black;
+            }
+        </style>
+        <!-- Hero area Start-->
+        <div class="hero-area section-bg2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="slider-area">
+                            <div class="slider-height2 slider-bg4 d-flex align-items-center justify-content-center">
+                                <div class="hero-caption hero-caption2">
+                                    <h2>Cart</h2>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb justify-content-center">
+                                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="{% url 'cart' %}">Cart</a></li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Hero area End -->
+        <!--================Cart Area =================-->
+        {% if cart %}
+            <section class="cart_area">
+                <div class="container">
+                    <div class="cart_inner">
+                        <div class="row">
+                            <!-- Cart Table -->
+                            <div class="col-lg-8">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Quantity</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col" style="padding-left: 55px;">Delete</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for i in cart %}
+                                            <tr id="row-{{ i.id }}">
+                                                <td>
+                                                    <div class="media">
+                                                        <div class="media-body">
+                                                            <p>{{ i.product.name }}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td><h5>${{ i.product.price_with_discount }}</h5></td>
+                                                <td>
+                                                    <div class="product_count">
+                                                        <button type="button" onclick="setCount(this)"
+                                                                data-id="{{ i.id }}"
+                                                                data-sign="-"
+                                                                class="quantity-btn quantity-decrease"><i
+                                                                class="ti-minus"></i>
+                                                        </button>
+                                                        <span style="padding: 15px 15px 15px 15px; border: 1px solid grey; margin-left: 5px; margin-right: 5px"
+                                                              id="quantity_{{ i.id }}">{{ i.quantity }}</span>
+                                                        <button type="button" onclick="setCount(this)"
+                                                                data-id="{{ i.id }}"
+                                                                data-sign="+"
+                                                                class="quantity-btn quantity-increase"><i
+                                                                class="ti-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                                <td><h5>${{ i.total_price_with_discount|floatformat:2 }}</h5></td>
+                                                <td class="text-right">
+                                                    <button type="button" onclick="deleteCart(this)"
+                                                            data-id="{{ i.id }}"
+                                                            class="btn-custom">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Order Summary -->
+                            {% if card_objs %}
+                                <div class="col-lg-4">
+                                    <div class="order-summary">
+                                        <h2>Your Order</h2><br>
+                                        <div class="item-section">
+                                            <span id="total_quantity">Product: ({{ total_quantity }})</span>
+                                            <span id="without_discount">${{ without_discount|floatformat:2 }}</span>
+                                        </div>
+                                        <div class="total-section">
+                                            <span>Subtotal:</span>
+                                            <span id="subtotal">${{ subtotal|floatformat:2 }}</span>
+                                        </div>
+                                        <div id="saving" class="savings">Saving: ${{ saving|floatformat:2 }}</div>
+                                        <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% else %}
+            {% if not card_objs %}
+                <div style="margin-bottom: 100px; margin-top: 100px" class="container">
+                    <div class="title">Cart is empty</div>
+                    <div class="message">Start from the home page — by searching for the product
+                        you can find or view collections
+                    </div>
+                    <a href="{% url 'index' %}" class="button">Home Page</a>
+                </div>
+            {% endif %}
+        {% endif %}
+        <!--================End Cart Area =================-->
+    </main>
+
+    <script>
+        const csrfToken = "{{ csrf_token }}"
+        const headers = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrfToken
+        }
+
+        async function setCount(button) {
+            if (!(button instanceof HTMLButtonElement)) return
+            const quantityEl = button.parentElement.children[1];
+            let quantity = +quantityEl.innerText;
+
+            if (quantity === 1 && button.dataset.sign === '-') {
+                return;
+            }
+            const response = await fetch('{% url 'update_cart' %}', {
+                method: "POST",
+                headers: headers,
+                body: JSON.stringify({
+                    "id": button.dataset.id,
+                    "sign": button.dataset.sign
+                })
+            })
+            if (response.status !== 200) {
+                console.log(`Error on increasing ${button.dataset.id}`)
+                const error = (await response.json()).detail
+                console.log(`Error: ${error}`)
+            }
+            const data = await response.json()
+            const tableRow = document.getElementById(`row-${button.dataset.id}`)
+            const td = tableRow.children[tableRow.children.length - 2]
+            if (!(td instanceof HTMLTableCellElement)) return
+            td.children[0].innerHTML = `$${data.price.with.toFixed(2)}`
+            button.parentElement.children[1].innerText = +button.parentElement.children[1].innerText + ((button.dataset.sign === '-') ? -1 : 1)
+
+            const total_amountEl = document.getElementById('total_quantity')
+            const without_discountEl = document.getElementById('without_discount')
+            const subtotalEl = document.getElementById('subtotal')
+            const savingEl = document.getElementById('saving')
+
+
+            total_amountEl.innerText = `Product: (${data.price.total_quantity})`
+            without_discountEl.innerText = `$${data.price.without_discount}`;
+            subtotalEl.innerText = `$${data.price.with_discount}`;
+            const saving = data.price.without_discount - data.price.with_discount;
+            savingEl.innerText = `Saving: $${saving.toFixed(2)}`;
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const deleteButtons = document.querySelectorAll('.btn-custom');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const button = event.target.closest('button');
+                    if (!button || !button.dataset.id) return;
+
+                    try {
+                        const response = await fetch(`{% url 'delete_cart' 0 %}`.replace('/0/', `/${button.dataset.id}/`), {
+                            method: "DELETE",
+                            headers: headers,
+                        });
+
+                        if (response.status !== 200) {
+                            console.log(`Error deleting ${button.dataset.id}`);
+                            const error = await response.json();
+                            console.log(`Error: ${error.detail}`);
+                            return;
+                        }
+
+                        const tableRow = document.getElementById(`row-${button.dataset.id}`);
+                        if (tableRow) tableRow.remove();
+
+                        const cartRows = document.querySelectorAll('.cart_inner .table tbody tr');
+                        const data = await response.json()
+                        const cartElement = document.querySelector('.cart')
+                        cartElement.dataset.cartCount = data.cart_counter
+
+                        const total_amountEl = document.getElementById('total_quantity')
+                        const without_discountEl = document.getElementById('without_discount')
+                        const subtotalEl = document.getElementById('subtotal')
+                        const savingEl = document.getElementById('saving')
+                        
+                        {#const roundToTwo = (num) => Math.round(num * 100) / 100;#}
+                        {#total_amountEl.innerText = `Product: (${roundToTwo(data.total_quantity)})`;#}
+                        
+                        total_amountEl.innerText = `Product: (${data.total_quantity})`;
+                        without_discountEl.innerText = `$${data.without_discount}`
+                        subtotalEl.innerText = `$${data.with_discount}`
+                        savingEl.innerText = `Saving: $${data.saving}`
+                        
+                        if (data.cart_counter === 0) {
+                            const emptyCartMessage = `
+                            <li><a href="{% url 'cart' %}"><span class="flaticon-shopping-cart"></span></a></li>
+                        `;
+                            const cartElement = document.querySelector('.cart')
+                            cartElement.outerHTML = emptyCartMessage;
+                        }
+
+                        if (cartRows.length === 0) {
+                            const emptyCartMessage = `
+                            <br><br>
+                            <div class="container">
+                                <div class="title">Cart is Empty</div>
+                                <div class="message">Start from the home page — by searching for the product
+                                        you can find or view collections
+                                </div>
+                                <a href="{% url 'index' %}" class="button">Home Page</a>
+                            </div>
+                            <br><br>
+                        `;
+                            const cartSection = document.querySelector('.cart_area');
+                            cartSection.innerHTML = emptyCartMessage;
+                        }
+
+                        updateOrderSummary();
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+
+    </script>
+{% endblock %}

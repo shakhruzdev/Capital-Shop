@@ -1,0 +1,270 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main>
+        <!-- Hero area Start-->
+        <div class="hero-area section-bg2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="slider-area">
+                            <div class="slider-height2 slider-bg4 d-flex align-items-center justify-content-center">
+                                <div class="hero-caption hero-caption2">
+                                    <h2>Blog Details</h2>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb justify-content-center">
+                                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="{% url 'blog_details' post.pk %}">Blog Details</a></li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Hero area End -->
+        <!-- Blog Area Start -->
+        <section class="blog_area single-post-area section-padding">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 posts-list">
+                        <div class="single-post">
+                            <div class="feature-img">
+                                <img style="width: 850px; height: 600px" class="img-fluid" src="{{ post.image.url }}"
+                                     alt="{{ post.title }}">
+                            </div>
+                            <div class="blog_details">
+                                <h2 style="color: #2d2d2d;">{{ post.title }}</h2>
+                                <ul class="blog-info-link mt-3 mb-4">
+                                    <li><i class="fa">&#xf022</i> {{ post.categories.name }}</li>
+                                    <li><i class="fa fa-comments"></i> {{ comments.count }} Comments</li>
+                                </ul>
+                                <p>
+                                    {{ post.description }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="navigation-top">
+                            <div class="navigation-area">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                                        {% if previous_post %}
+                                            <div class="thumb">
+                                                <a href="{% url 'blog_details' previous_post.pk %}">
+                                                    <img style="width: 80px; height: 80px" class="img-fluid"
+                                                         src="{{ previous_post.image.url }}" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="arrow">
+                                                <a href="{% url 'blog_details' previous_post.pk %}">
+                                                    <span class="lnr text-white ti-arrow-left"></span>
+                                                </a>
+                                            </div>
+                                            <div class="detials">
+                                                <p>Prev Post</p>
+                                                <a href="{% url 'blog_details' previous_post.pk %}">
+                                                    <h4 style="color: #2d2d2d;">{{ previous_post.title|truncatechars:15 }}</h4>
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                                        {% if next_post %}
+                                            <div class="detials">
+                                                <p>Next Post</p>
+                                                <a href="{% url 'blog_details' next_post.pk %}">
+                                                    <h4 style="color: #2d2d2d;">{{ next_post.title }}</h4>
+                                                </a>
+                                            </div>
+                                            <div class="arrow">
+                                                <a href="{% url 'blog_details' next_post.pk %}">
+                                                    <span class="lnr text-white ti-arrow-right"></span>
+                                                </a>
+                                            </div>
+                                            <div class="thumb">
+                                                <a href="{% url 'blog_details' next_post.pk %}">
+                                                    <img style="width: 80px; height: 80px" class="img-fluid"
+                                                         src="{{ next_post.image.url }}" alt="">
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if comments_with_reply_count is not None %}
+                            <div class="blog-author">
+                                <div class="media align-items-center">
+                                    <img src="{{ comments_with_reply_count.user.image.url }}" alt="">
+                                    <div class="media-body">
+                                        <h4>{{ comments_with_reply_count.user.first_name }} {{ comments_with_reply_count.user.last_name }}</h4>
+                                        <p>{{ comments_with_reply_count.message }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                        {% endif %}
+                        <div class="comments-area">
+                            <h4>{{ comments.count }} Comments</h4>
+                            <div class="comment-list">
+                                {% for comment in comments %}
+                                    <div class="single-comment justify-content-between d-flex">
+                                        <div class="user justify-content-between d-flex">
+                                            <div class="thumb">
+                                                <img src="{{ comment.user.image.url }}" alt="User image"
+                                                     style="width: 50px; height: 50px;">
+                                            </div>
+                                            <div class="desc">
+                                                <p class="comment">{{ comment.user.first_name }} {{ comment.user.last_name }}</p>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="d-flex align-items-center">
+                                                        <h5>{{ comment.message }}</h5>
+                                                        <p class="date">{{ comment.created_at|date:"F j, Y, g:i a" }}</p>
+                                                    </div>
+                                                    <div class="reply-btn">
+                                                        <a href="javascript:void(0);" class="btn-reply text-uppercase"
+                                                           data-comment-id="{{ comment.id }}">Reply</a>
+                                                    </div>
+                                                </div>
+                                                <!-- Hidden reply form -->
+                                                <div class="comment-form reply-form" id="reply-form-{{ comment.id }}"
+                                                     style="display: none; margin-top: 15px;">
+                                                    <h4>Leave a Reply</h4>
+                                                    <form class="form-contact comment_form" method="post"
+                                                          action="{% url 'blog_details' pk=post.pk %}">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="comment_id" value="{{ comment.id }}">
+                                                        <div class="form-group">
+                                                            <textarea class="form-control w-100" name="message"
+                                                                      id="comment" cols="30" rows="3"
+                                                                      placeholder="Write your reply here..."
+                                                                      required></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="submit" name="reply"
+                                                                    class="button button-contactForm btn_1 boxed-btn">
+                                                                Submit Reply
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Display replies -->
+                                    <div class="reply-list" style="margin-left: 20px;">
+                                        {% for reply in comment.replies.all %}
+                                            <br>
+                                            <div class="single-reply justify-content-between d-flex">
+                                                <div class="user justify-content-between d-flex">
+                                                    <div class="thumb">
+                                                        <img src="{{ reply.user.image.url }}" alt="User image"
+                                                             style="width: 50px; height: 50px;">
+                                                    </div>
+                                                    <div class="desc">
+                                                        <p class="reply-comment">{{ reply.user.first_name }} {{ reply.user.last_name }}</p>
+                                                        <div class="d-flex justify-content-between">
+                                                            <h5>{{ reply.message }}</h5>
+                                                            <p class="date">{{ reply.created_at|date:"F j, Y, g:i a" }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <br><br>
+                                {% empty %}
+                                    <p>No comments yet.</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="comment-form">
+                            <h4>Leave a Comment</h4>
+                            <form class="form-contact comment_form" id="commentForm" method="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <textarea class="form-control w-100" name="comment" id="comment" cols="30"
+                                                      rows="9" placeholder="Write Comment" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="button button-contactForm btn_1 boxed-btn">Post
+                                        Comment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog_right_sidebar">
+                            <aside class="single_sidebar_widget post_category_widget">
+                                <h4 class="widget_title" style="color: #2d2d2d;">Category</h4>
+                                <ul class="list cat-list">
+                                    {% for i, post_counter in category_post_counts %}
+                                        {% if post_counter %}
+                                            <li>
+                                                <a href="{% url 'blog' %}?cat={{ i.id }}" class="d-flex">
+                                                    <p>{{ i.name }}</p>
+                                                    <p>({{ post_counter }})</p>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </aside>
+
+                            <aside class="single_sidebar_widget popular_post_widget">
+                                <h3 class="widget_title" style="color: #2d2d2d;">Recent Post</h3>
+                                {% for post in recent_posts %}
+                                    <div class="media post_item">
+                                        <img style="width: 100px; height: 100px" src="{{ post.image.url }}" alt="post">
+                                        <div class="media-body">
+                                            <a href="{% url 'blog_details' post.pk %}">
+                                                <h3 style="color: #2d2d2d;">{{ post.title|truncatechars:25 }}</h3>
+                                            </a>
+                                            <p>{{ post.created_at|date:"F j, Y" }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </aside>
+                            <aside class="single_sidebar_widget tag_cloud_widget">
+                                <h4 class="widget_title" style="color: #2d2d2d;">Tag Clouds</h4>
+                                <ul class="list">
+                                    {% for i in tags %}
+                                        <li>
+                                            <a href="{% url 'blog' %}?tag={{ i.id }}">{{ i.name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </aside>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Blog Area End -->
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const replyButtons = document.querySelectorAll(".btn-reply");
+            replyButtons.forEach(button => {
+                button.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const commentId = this.getAttribute("data-comment-id");
+                    const replyForm = document.getElementById(`reply-form-${commentId}`);
+                    replyForm.style.display = replyForm.style.display === "none" || !replyForm.style.display ? "block" : "none";
+                });
+            });
+        });
+    </script>
+{% endblock %}

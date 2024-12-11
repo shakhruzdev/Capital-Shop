@@ -1,0 +1,61 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+
+    <style>
+        html, body {
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        .liked-products {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .product {
+            flex: 1 1 calc(25% - 20px);
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .liked-products-grid img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .liked-products-grid img:hover {
+            transform: scale(1.05);
+            transition: 0.3s ease-in-out;
+        }
+    </style>
+    <h1 style="text-align: center">Search Results for "{{ search_query }}"</h1>
+
+    {% if products %}
+        <div class="liked-products">
+            {% for product in products %}
+                <div class="product">
+                    <img style="width: 280px; height: 420px" src="{{ product.image.url }}"
+                         alt="{{ product.name }}"><br><br>
+                    <a href="{% url 'product_detail' product.id %}"><p
+                            style="text-align: center; color: red">View Product</p></a><br><br>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No products found for "{{ search_query }}".</p>
+    {% endif %}
+{% endblock %}

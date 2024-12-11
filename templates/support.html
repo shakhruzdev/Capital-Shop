@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Capital Shop</title>
+    <style>
+        html, body {
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
+
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #ff0000;
+            color: #fff;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            background: #fff;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            font-size: 1.4rem;
+            color: #ff0000;
+            margin: 0 0 0.5rem;
+        }
+
+        .section p {
+            margin: 0.5rem 0;
+        }
+
+        .section a {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #fff;
+            background-color: #ff0000;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .section a:hover {
+            background-color: #cc0000;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Support Center</h1>
+    <p>Need help? We're here for you.</p>
+</header>
+<div class="container">
+    <div class="section">
+        <h2>Contact Support</h2>
+        <p>If you need assistance with an issue, you can reach out to our support team directly. We’re available Monday
+            to Friday, 9 AM to 5 PM.</p>
+        <p>Email us at: <a href="mailto:shaislamovshakhruz@gmail.com">shaislamovshakhruz@gmail.com</a></p>
+    </div>
+    <div class="section">
+        <h2>Frequently Asked Questions</h2>
+        <p>Have a question? Check out our FAQ page for answers to common questions.</p>
+        <a href="{% url 'faq' %}">Visit FAQ</a>
+    </div>
+    <div class="section">
+        <h2>Submit a Support Request</h2>
+        <p>Can’t find what you’re looking for? Submit a detailed request, and we’ll get back to you as soon as
+            possible.</p>
+        <a href="mailto:shaislamovshakhruz@gmail.com">Submit Request</a>
+    </div>
+    <div class="section">
+        <h2>Technical Issues</h2>
+        <p>Encountering a bug or experiencing technical difficulties? Let us know by providing a detailed description of
+            the issue.</p>
+        <a href="mailto:shaislamovshakhruz@gmail.com">Report a Problem</a>
+    </div>
+</div>
+<footer>
+    <p>&copy; 2024 Capital Shop. Built with ❤️ by <strong>shakhruz_dev</strong>.</p>
+</footer>
+</body>
+</html>

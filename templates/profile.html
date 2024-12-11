@@ -1,0 +1,891 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block content %}
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom styling for the delete button */
+        .btn-custom {
+            background-color: white;
+            border: 1px solid white;
+            color: white;
+            padding: 10px 15px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            justify-content: 10px;
+        }
+
+        .btn-custom .fa-trash {
+            color: black;
+            font-size: 18px;
+        }
+    </style>
+    <style>
+        .containerr {
+            justify-content: center; /* Center content vertically */
+            align-items: center; /* Center content horizontally */
+            text-align: center; /* Center text inside each element */
+        }
+
+        .titlee {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .messagee {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .buttonn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: red;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        .order-summary {
+            background-color: #fff;
+            border: 1px solid #e6e8ed;
+            padding: 20px;
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+        }
+
+        .order-id {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .order-status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .order-status .status {
+            background-color: #ffe8a1;
+            color: #333;
+            width: auto;
+            height: auto;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 1000px
+        }
+
+        .order-details p {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .order-check {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .order-check label {
+            margin-left: 10px;
+            color: #333;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-primary {
+            background-color: #6a1b9a;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background-color: #4a148c;
+        }
+
+        .btn-secondary {
+            background-color: #fbe9e7;
+            color: #d32f2f;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f8bbd0;
+        }
+
+        .order-footer {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .separator-line {
+            border-bottom: 1px solid #e6e8ed; /* Light gray line */
+            margin-bottom: 15px; /* Space below the line */
+            width: 1295px;
+            margin-left: -20px
+        }
+
+        .pay-button {
+            background-color: #6a0dad;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .pay-button:hover {
+            background-color: #520b9f;
+        }
+
+        .order-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .qr-code-container {
+            text-align: right;
+            margin-top: -150px
+        }
+
+        .qr-code {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+        }
+    </style>
+    <style>
+
+        .order-container {
+            width: 600px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .order-header h2 {
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .status {
+            background-color: #ffeeba;
+            color: #856404;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .order-details p {
+            margin: 8px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .order-details strong {
+            color: #000;
+        }
+
+        .checkbox {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .checkbox input {
+            margin-right: 8px;
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .pay-button {
+            background-color: #6a0dad;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .cancel-button {
+            background-color: transparent;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .pay-button:hover {
+            background-color: #520b9f;
+        }
+
+        .cancel-button:hover {
+            background-color: #d9534f;
+            color: #fff;
+        }
+
+        .order-footer {
+            text-align: right;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+    </style>
+    <style>
+        .credit-card {
+            background: #212529;
+            color: #fff;
+            border-radius: 10px;
+            width: 35%;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .payment-detail {
+            font-size: 14px;
+            color: #4aa3ff;
+        }
+
+        .card-logo {
+            color: #ffd700;
+            font-size: 15px;
+        }
+
+        .card-body {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .card-number {
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .expiration span,
+        .ccv span {
+            font-size: 12px;
+            color: #ccc;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .expiration select {
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 5px;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
+        .ccv div {
+            font-size: 14px;
+            color: #fff;
+        }
+    </style>
+    <style>
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        label span {
+            color: red;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .phone-input span {
+            background: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .radio-group label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+    </style>
+    <style>
+        html, body {
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: black;
+        }
+
+        .profile-header {
+            background-color: white;
+            color: black;
+            padding: 30px 0;
+            border-bottom: 4px solid red;
+        }
+
+        .profile-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+
+        .profile-header img {
+            border-radius: 50%;
+            max-width: 150px;
+            border: 5px solid #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-info {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .profile-info h2 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .profile-info p {
+            font-size: 18px;
+            color: #777;
+        }
+
+        .profile-info .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .profile-info .stats div {
+            text-align: center;
+            font-size: 16px;
+            position: relative;
+        }
+
+        .profile-info .stats div span {
+            font-size: 20px;
+            font-weight: bold;
+            color: red;
+        }
+
+        .profile-info .stats div.active {
+            color: red;
+            font-weight: bold;
+        }
+
+        .profile-info .stats div.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background-color: red;
+            border-radius: 8px;
+        }
+
+        .profile-actions {
+            display: flex;
+            align-items: center;
+            margin-left: -10px;
+        }
+
+        .profile-actions .btn-edit,
+        .profile-actions .btn-logout {
+            background-color: red;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .profile-actions .btn-edit:hover,
+        .profile-actions .btn-logout:hover {
+            background-color: #b30000;
+            color: white;
+        }
+
+        .profile-content {
+            padding: 30px;
+        }
+
+        .profile-content h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: red;
+        }
+
+        .liked-products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .liked-products-grid img {
+            width: 100%;
+            height: 370px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .liked-products-grid img:hover {
+            transform: scale(1.05);
+            transition: 0.3s ease-in-out;
+        }
+
+        .footer {
+            background-color: black;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .footer a {
+            color: red;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: black;
+        }
+
+        .liked-products,
+        .orders,
+        .spending,
+        .real-orders {
+            display: none;
+        }
+
+        .liked-products.active,
+        .orders.active,
+        .spending.active,
+        .real-orders.active {
+            display: block;
+        }
+    </style>
+
+    <!-- Profile Header Section -->
+    <section class="profile-header">
+        <div class="container">
+            <!-- Profile Picture -->
+            <form id="profile-image-form" action="{% url 'edit_profile_image' %}" method="POST"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" id="profile-image-input" name="profile_image" accept="image/*" style="display: none;"
+                       onchange="uploadImage()">
+                <img src="{{ request.user.image.url }}" alt="Profile Picture" id="profile-image"
+                     onclick="document.getElementById('profile-image-input').click();">
+            </form>
+
+            <div class="profile-info">
+                <h2>{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+                <p>{{ request.user.email }}</p>
+                <div class="stats">
+                    <div id="spending-stat" onclick="showContent('spending')" class="stat-item active">
+                        About me
+                    </div>
+                    <div id="liked-products-stat" onclick="showContent('liked-products')" class="stat-item">
+                        Liked Products
+                    </div>
+                    <div id="orders-stat" onclick="showContent('orders')" class="stat-item">
+                        Card
+                    </div>
+                    <div id="real-orders-stat" onclick="showContent('real-orders')" class="stat-item">
+                        Orders
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Profile Content Section -->
+    <section class="profile-content">
+        <div class="container">
+            <!-- About Me Section -->
+            <div id="spending" class="spending active">
+                <h3>About Me</h3>
+                <form action="{% url 'edit_profile' %}" method="POST" class="profile-edit-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="first-name">First Name <span>*</span></label>
+                        <input type="text" id="first-name" name="first_name" value="{{ user.first_name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name <span>*</span></label>
+                        <input type="text" id="last-name" name="last_name" value="{{ user.last_name }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender <span>*</span></label>
+                        <select id="gender" name="gender" required>
+                            {% for key, value in GENDER_CHOICE %}
+                                <option value="{{ key }}" {% if user.gender == key %}selected{% endif %}
+                                        {% if key == 1 %}disabled{% endif %}>
+                                    {{ value }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email <span>*</span></label>
+                        <input type="email" id="email" name="email" value="{{ user.email }}"
+                               required pattern="[a-zA-Z0-9._%+-]+@gmail\.com"
+                               title="Email must end with @gmail.com" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number <span>*</span></label>
+                        <input type="tel" id="phone-number" name="phone_number"
+                               value="{{ user.phone_number }}"
+                               pattern="\+998\d{9}"
+                               title="Phone number must start with +998 and be 13 characters long (e.g., +998901234567)"
+                               required>
+                    </div>
+                    <div style="float: left" class="profile-actions">
+                        <button type="submit" class="btn-edit">Save Changes</button>
+                    </div>
+                </form>
+
+                <!-- Logout Button -->
+                <div class="profile-actions">
+                    <a href="{% url 'logout' %}">
+                        <button class="btn-logout">Logout</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Liked Products Section -->
+            <div id="liked-products" class="liked-products">
+                {% if liked_products %}
+                    <h3>Liked Products</h3>
+                    <div class="liked-products-grid">
+                        {% for product in liked_products %}
+                            <a href="{% url 'product_detail' product.id %}"><img src="{{ product.image.url }}"
+                                                                                 alt="{{ product.name }}"></a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="containerr">
+                        <div class="titlee">Nothing yet</div>
+                        <div class="messagee">Start from the home page — by searching for the desired product
+                            you can find or view collections
+                        </div>
+                        <a href="{% url 'index' %}" class="buttonn">Home Page</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Orders Section -->
+            <div id="orders" class="orders">
+                {% if credit_card == None %}
+                    <div style="width: 150px; height: 100px; border: 1px solid red; border-radius: 15px; text-align:center;  margin-left: 550px; background: red; color: white">
+                        <a href="{% url 'add_card' %}"><br>
+                            <div style="border: 1px solid white; border-radius: 50%; width: 25px; height: 25px; margin-left: 60px; background: white; color: red">
+                                +
+                            </div>
+                            Add Card</a>
+                    </div>
+                {% else %}
+                    <div class="credit-card">
+                        <div class="card-header">
+                            <span class="payment-detail"></span>
+                            <div class="card-logo">{{ credit_card.get_bank_name_display }}</div>
+                        </div>
+                        <div class="card-body">
+                            <div style="color: grey; font-size: 15px;">Card Number</div>
+                            <div class="card-number">**** **** **** {{ card_num }}</div>
+                            <div style="color: grey; font-size: 15px;">Current Balance</div>
+                            <div class="card-number">${{ credit_card.balance }}</div>
+                            <div class="card-header">
+                                <span style="font-size: 20px">{{ credit_card.first_name }} {{ credit_card.last_name }}</span>
+                                <div class="card-logo">{{ credit_card.get_card_name_display }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="profile-actions">
+                        <a href="{% url 'exit_card' credit_card.id %}">
+                            <button class="btn-logout">Exit Card</button>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div id="real-orders" class="real-orders">
+                {% if orders %}
+                    <h3>Orders</h3>
+                    {% for i in orders %}
+                        <div id="row-{{ i.id }}" class="order-summary">
+                            <h2 class="order-id">Order ID {{ i.id }}</h2>
+                            <div class="separator-line"></div>
+
+                            <div class="order-status">
+                                <span>Payment Status:</span>
+                                <span class="status">{{ i.get_payment_status_display }}</span>
+                            </div>
+
+                            <div class="order-details">
+                                <p><strong>Delivery Address: </strong>
+                                    {% if i.delivery_point != ' ' %}
+                                        {{ i.delivery_point }}
+                                    {% else %}
+                                        {{ i.delivery_address }}
+                                    {% endif %}
+                                </p>
+                                <p><strong>Order Date: </strong>{{ i.created_at }}</p>
+                                <p><strong>Order Price: </strong>${{ i.total_price }}</p>
+                            </div>
+                            {% if i.payment_status == 1 and i.payment_type != 1 %}
+                                <div class="order-actions">
+                                    <a href="{% url 'pay_online' i.id %}">
+                                        <button class="pay-button">Pay Order</button>
+                                    </a>
+                                </div>
+                            {% elif i.payment_status == 2 %}
+                                <div class="order-status">
+                                    <span>Order Status:</span>
+                                    <span class="status">{{ i.get_status_display }}</span>
+                                </div>
+                            {% else %}
+                                <div class="order-status">
+                                    <span>Order Status:</span>
+                                    <span class="status">{{ i.get_status_display }}</span>
+                                </div>
+                                <div class="order-status">
+                                    <span>Payment Type:</span>
+                                    <span class="status">{{ i.get_payment_type_display }}</span>
+                                </div>
+                            {% endif %}
+                            {% if i.qr_code.url != '' %}
+                                <div class="qr-code-container">
+                                    <img src="{{ i.qr_code.url }}" alt="Order QR Code" class="qr-code">
+                                </div>
+                            {% endif %}
+                            {% if i.payment_status != 2 %}
+                                <div class="text-right" style="margin-left: -14px">
+                                    <button type="button" onclick="deleteCart(this)" data-id="{{ i.id }}"
+                                            class="btn-custom">
+                                        <i class="fa fa-trash"> <span style="font-size: 15px; font-family: sans-serif">Cancel Order</span></i>
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <br>
+                    {% endfor %}
+                {% else %}
+                    <div class="containerr">
+                        <div class="titlee">Nothing yet</div>
+                        <div class="messagee">Start from the home page — by searching for the desired product
+                            you can find or view collections
+                        </div>
+                        <a href="{% url 'index' %}" class="buttonn">Home Page</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function showContent(contentType) {
+            // Hide all sections
+            document.querySelectorAll('.liked-products, .orders, .spending, .real-orders').forEach(function (section) {
+                section.classList.remove('active');
+            });
+
+            // Show the selected section
+            document.getElementById(contentType).classList.add('active');
+
+            // Remove active class from all stats
+            document.querySelectorAll('.stat-item').forEach(function (item) {
+                item.classList.remove('active');
+            });
+
+            // Add active class to the clicked stat
+            document.getElementById(contentType + '-stat').classList.add('active');
+
+            // Save the selected section to localStorage
+            localStorage.setItem('activeSection', contentType);
+        }
+
+        // Restore the last active section on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedSection = localStorage.getItem('activeSection') || 'spending'; // Default to 'spending'
+            showContent(savedSection);
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.location.hash === '#liked-products') {
+                const likedProducts = document.querySelector('#liked-products');
+                if (likedProducts) {
+                    likedProducts.scrollIntoView({behavior: 'smooth'});
+                }
+            }
+
+            const deleteButtons = document.querySelectorAll('.btn-custom');
+
+            const getCSRFToken = () => {
+                const cookieValue = document.cookie
+                    .split('; ')
+                    .find(row => row.startsWith('csrftoken='))
+                    ?.split('=')[1];
+                return cookieValue || '';
+            };
+
+            const headers = {
+                'X-CSRFToken': getCSRFToken(),
+                'Content-Type': 'application/json',
+            };
+
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const button = event.target.closest('button');
+                    if (!button || !button.dataset.id) return;
+
+                    try {
+                        console.log(`Deleting order ID: ${button.dataset.id}`);
+                        const response = await fetch(`{% url 'delete_order' 0 %}`.replace('/0/', `/${button.dataset.id}/`), {
+                            method: "DELETE",
+                            headers: headers,
+                        });
+
+                        if (response.status !== 200) {
+                            const error = await response.json();
+                            console.error(`Error: ${error.detail}`);
+                            return;
+                        }
+
+                        const tableRow = document.getElementById(`row-${button.dataset.id}`);
+                        if (tableRow) {
+                            tableRow.remove();
+                        }
+
+                        console.log(`Order ${button.dataset.id} deleted successfully!`);
+
+                        const cartRows = document.querySelectorAll('#real-orders .order-summary');
+                        // Log the number of cart rows
+                        console.log("Number of cart rows:", cartRows.length);
+
+                        // If no cart rows exist, display the empty cart message
+                        if (cartRows.length === 0) {
+                            const emptyCartMessage = `
+                            <div class="containerr">
+                                <div class="titlee">Nothing yet</div>
+                                <div class="messagee">Start from the home page — you can find the product you need by searching or view collections
+                                </div>
+                                <a href="{% url 'index' %}" class="buttonn">Home Page</a>
+                            </div>
+                        `;
+                            console.log("Number of cart rows:", cartRows.length);
+                            const cartSection = document.querySelector('.real-orders');
+                            if (cartSection) {
+                                cartSection.innerHTML = emptyCartMessage;
+                            } else {
+                                console.error("Cart section not found!");
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        function uploadImage() {
+            const form = document.getElementById('profile-image-form');
+            form.submit();
+        }
+    </script>
+
+{% endblock %}

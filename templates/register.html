@@ -1,0 +1,141 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<!-- Mirrored from preview.colorlib.com/theme/capitalshop/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 11:46:17 GMT -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Shop | eCommers</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/icon/favicon.png' %}">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slicknav.css' %}">
+    <link rel="stylesheet" href="{% static 'css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/price_rangs.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<!-- header end -->
+<main class="login-bg">
+    <!-- Register Area Start -->
+    <div class="register-form-area">
+        <div class="register-form text-center">
+            <!-- Login Heading -->
+            <div class="register-heading">
+                <span>Sign Up</span>
+                <p>Create your account to get full access</p>
+            </div>
+            <!-- Registration Form -->
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <!-- Single Input Fields -->
+                <div class="input-box">
+                    <div class="single-input-fields">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" placeholder="Enter your first name" required>
+                    </div>
+                    <div class="single-input-fields">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" placeholder="Enter your last name" required>
+                    </div>
+                    <div class="single-input-fields">
+                        <label>Email Address</label>
+                        {% if email_error %}
+                            <p style="color: red; margin-bottom: 0px; margin-left: -350px">{{ email_error }}</p>
+                        {% endif %}
+                        <input type="email" name="email" placeholder="Enter email address" required>
+                    </div>
+                    <div class="single-input-fields">
+                        <label>Password</label>
+                        {% if error_password %}
+                            <p style="color: red; margin-bottom: 0px; margin-right: 210px">{{ error_password }}</p>
+                        {% endif %}
+                        <input minlength="8" type="password" name="password" placeholder="Enter Password" required>
+                    </div>
+                    <div class="single-input-fields">
+                        <label>Confirm Password</label>
+                        {% if password_error %}
+                            <p style="color: red; margin-bottom: 0px; margin-right: 400px">{{ password_error }}</p>
+                        {% endif %}
+                        <input minlength="8" type="password" name="confirm_password" placeholder="Confirm Password"
+                               required>
+                    </div>
+                </div>
+                <!-- Form Footer -->
+                <div class="register-footer">
+                    <p> Already have an account? <a href="{% url 'login' %}"> Login</a> here</p>
+                    <button type="submit" class="submit-btn3">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Register Area End -->
+</main>
+
+
+<!-- JS here -->
+<!-- Jquery, Popper, Bootstrap -->
+<script src="{% static 'js/vendor/modernizr-3.5.0.min.js' %}"></script>
+<script src="{% static 'js/vendor/jquery-1.12.4.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<!-- Slick-slider , Owl-Carousel ,slick-nav -->
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/slick.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.min.js' %}"></script>
+
+<!--wow , counter , waypoint, Nice-select -->
+<script src="{% static 'js/wow.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+<script src="{% static 'js/waypoints.min.js' %}"></script>
+<script src="{% static 'js/price_rangs.js' %}"></script>
+
+<!-- contact js -->
+<script src="{% static 'js/contact.js' %}"></script>
+<script src="{% static 'js/jquery.form.js' %}"></script>
+<script src="{% static 'js/jquery.validate.min.js' %}"></script>
+<script src="{% static 'js/mail-script.js' %}"></script>
+<script src="{% static 'js/jquery.ajaxchimp.min.js' %}"></script>
+
+<!--  Plugins, main-Jquery -->
+<script src="{% static 'js/plugins.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-23581568-13');
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+        data-cf-beacon='{"rayId":"8d2752e608f66a8f","version":"2024.10.1","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"token":"cd0b4b3a733644fc843ef0b185f98241","b":1}'
+        crossorigin="anonymous"></script>
+
+
+</body>
+
+<!-- Mirrored from preview.colorlib.com/theme/capitalshop/register.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 14 Oct 2024 11:46:17 GMT -->
+</html>

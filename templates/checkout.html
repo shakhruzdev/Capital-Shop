@@ -1,0 +1,643 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+    <main>
+        <div class="hero-area section-bg2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="slider-area">
+                            <div class="slider-height2 slider-bg4 d-flex align-items-center justify-content-center">
+                                <div class="hero-caption hero-caption2">
+                                    <h2>Checkout</h2>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb justify-content-center">
+                                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="{% url 'checkout' %}">Checkout</a></li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <section class="checkout_area">
+            <div class="container">
+                <div class="billing_details">
+                    <form action="{% url 'checkout' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <b style="color: black; font-size: 25px; margin-bottom: 30px;">Order Formalization</b>
+                            <div class="col-lg-8">
+                                <div class="qabul-yetkazish">
+                                    <b style="color: black; font-size: 20px; font-weight: 550">Pick up method and
+                                        delivery address:</b>
+                                    <div id="city-dropdown" class="dropdown-container">
+                                        <label for="custom-dropdown">Delivery city</label>
+                                        <div id="custom-dropdown" class="dropdown-btn">Toshkent</div>
+                                        <div class="dropdown-list">
+                                            <div class="dropdown-item">Toshkent</div>
+                                            <div class="dropdown-item">Namangan</div>
+                                            <div class="dropdown-item">Farxod</div>
+                                            <div class="dropdown-item">Qorashina</div>
+                                            <div class="dropdown-item">Shamaton</div>
+                                            <div class="dropdown-item">Bogdan</div>
+                                            <div class="dropdown-item">Unxayat</div>
+                                            <div class="dropdown-item">Jumabuy</div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="delivery_point" id="selected-city" value="Toshkent">
+
+
+                                    <h3 style="font-size: 15px; margin-top: 35px; margin-bottom: 8px">How to get:</h3>
+                                    <div class="option-group">
+                                        <input type="radio" id="pickup" name="delivery" value="pickup" checked>
+                                        <label for="pickup">Delivery point</label>
+                                    </div>
+                                    <div class="option-group">
+                                        <input type="radio" id="courier" name="delivery" value="courier">
+                                        <label for="courier">By courier to the door</label>
+                                    </div>
+                                    <h3 id="courier-heading"
+                                        style="font-size: 15px; margin-top: 35px; margin-bottom: 8px">By courier by
+                                        address</h3>
+                                    <h5 style="color: red; font-size: 15px">{{ message }}</h5>
+                                    <input type="text" class="form-control" id="delivery-address"
+                                           name="delivery_address" placeholder="delivery address">
+                                </div>
+                                <br>
+                                <div style="height: auto" class="qabul-buyurtma">
+                                    <b style="color: black; font-size: 20px; font-weight: 550">Order taker:</b>
+                                    <br>
+                                    <br>
+                                    <!--                            <form class="row contact_form" style="margin-top: 15px" action="#" method="post"-->
+                                    <!--                                  novalidate="novalidate">-->
+                                    <input style="margin-bottom: 10px" type="text" class="form-control" id="first"
+                                           name="first_name" placeholder="First name*" required>
+                                    <input style="margin-bottom: 10px" type="text" class="form-control" id="last"
+                                           name="last_name" placeholder="Last name*" required>
+                                    <input maxlength="13" style="margin-bottom: 10px" type="tel" class="form-control"
+                                           id="phone"
+                                           name="phone_number" placeholder="Phone number*" required>
+                                </div>
+                            </div>
+                            <div style="width: 840px" class="payment-options-container">
+                                <b style="color: black; font-size: 20px; font-weight: 550">Payment type</b>
+                                <br>
+                                <br>
+                                <!-- Payment Option 1 -->
+                                <div class="option-group">
+                                    <input type="radio" id="option1" name="payment" value="online">
+                                    <label for="option1">
+                                        <span class="option-icon">💳</span>Online by card
+                                    </label>
+                                    <div class="option-subtext">
+                                        UZCARD, HUMO, Visa, MasterCard
+                                    </div>
+                                </div>
+
+
+                                <!-- Payment Option 2 -->
+                                <div class="option-group">
+                                    <input type="radio" id="option2" name="payment" value="byhand">
+                                    <label for="option2"><span class="option-icon">💵</span>
+                                        Payable upon receipt
+                                    </label>
+                                    <div class="option-subtext">
+                                        To the courier - only in cash or by QR code, at delivery points - cash money and
+                                        by card
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4" style="margin-top: -960px; margin-left: 870px">
+                                <div class="order-summary">
+                                    <h3>Your order</h3>
+                                    <a href="{% url 'cart' %}"><h5>Go to cart</h5></a>
+                                    <div class="item-section">
+                                        <span>Products ({{ total_quantity }}):</span>
+                                        <span>${{ without_discount }}</span>
+                                    </div>
+                                    <div class="total-section">
+                                        <span>Total:</span>
+                                        <span>${{ with_discount }}</span>
+                                    </div>
+                                    {% if promo_not_exist_error %}
+                                        <p style="color: red; margin-bottom: -5px">{{ promo_not_exist_error }}</p>
+                                    {% elif promo_used_error %}
+                                        <p style="color: red; margin-bottom: -5px">{{ promo_used_error }}</p>
+                                    {% endif %}
+                                    <div class="cupon_area promo-container">
+                                        <div class="promo-question" onclick="togglePromoInput()">
+                                            <span class="arrow">▼</span>Is there a promo code?
+                                        </div>
+                                        <div class="promo-input-container">
+                                            <input id="promo_code" name="promo_code" type="text" class="promo-input"
+                                                   placeholder="ENTER PROMO CODE"/>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <style>
+        .cart_inner .row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .cart_inner .col-lg-8 {
+            flex: 0 0 65%;
+            padding-right: 30px;
+        }
+
+        .cart_inner .col-lg-4 {
+            flex: 0 0 30%;
+            padding-left: 30px;
+        }
+
+        .order-summary {
+            width: 100%;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+        }
+
+        .order-summary h3 {
+            font-size: 18px;
+            color: black;
+            margin-bottom: 10px;
+        }
+
+        .order-summary h5 {
+            font-size: 16px;
+            color: white;
+            margin-top: -40px;
+            float: right;
+            background: red;
+            width: 130px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid red;
+            border-radius: 6px;
+            padding-top: 5px;
+        }
+
+        .order-summary .item-section {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+        }
+
+        .order-summary .delivery-date {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            padding: 8px;
+            border: 1px solid #9b59b6;
+            border-radius: 5px;
+            color: #9b59b6;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+
+        .order-summary .total-section {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 20px;
+            color: #333;
+        }
+
+        .order-summary .savings {
+            color: #27ae60;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .order-summary .checkout-btn {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            text-align: center;
+            background-color: red;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        .promo-container {
+            width: 100%;
+            margin-top: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 8px;
+        }
+
+        .promo-question {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            padding: 8px 0;
+        }
+
+        .promo-question:hover {
+            color: #0056b3;
+        }
+
+        .promo-question .arrow {
+            margin-right: 8px;
+            transition: transform 0.3s;
+        }
+
+        .expanded .arrow {
+            transform: rotate(180deg);
+        }
+
+        .promo-input-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            width: 380px;
+            margin-left: -26px;
+        }
+
+        .expanded .promo-input-container {
+            max-height: 55px;
+        }
+
+        .promo-input {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+    </style>
+
+    <script>
+        function togglePromoInput() {
+            const container = document.querySelector('.promo-container');
+            const promoText = document.querySelector('.promo-text');
+
+            container.classList.toggle('expanded');
+
+            if (container.classList.contains('expanded')) {
+                promoText.textContent = "PROMO KODNI KIRITING";
+            } else {
+                promoText.textContent = "Promokod bormi?";
+            }
+        }
+    </script>
+
+    <style>
+        .qabul-buyurtma {
+            width: 100%;
+            height: 300px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+    <style>
+        .qabul-yetkazish {
+            width: 100%;
+            height: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+
+    <style>
+        .delivery-options {
+            font-family: Arial, sans-serif;
+        }
+
+        .delivery-options h3 {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .option {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #e6e6ff;
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .option-content {
+            width: 100%;
+        }
+
+        .option-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .option-title strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .date {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .free {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .option-details {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .option-details li {
+            margin-bottom: 4px;
+        }
+
+        .option-description {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+    <style>
+        .dropdown-container {
+            font-family: Arial, sans-serif;
+            margin-top: 22px;
+            margin-bottom: 22px;
+            margin-right: 20px;
+            position: relative;
+            background-color: e6e6ff;
+            width: 250px;
+        }
+
+        .dropdown-container label {
+            font-size: 15px;
+            color: #333;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .dropdown-btn {
+            width: 100%;
+            height: 35px;
+            padding: 6px;
+            padding-left: 10px;
+            font-size: 16px;
+            color: #333;
+            background-color: #e6e6ff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: left;
+            position: relative;
+        }
+
+        .dropdown-btn::after {
+            content: '▼';
+            font-size: 12px;
+            color: #999;
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .dropdown-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+
+        .dropdown-item {
+            padding: 12px;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const dropdownBtn = document.getElementById("custom-dropdown");
+            const dropdownList = document.querySelector(".dropdown-list");
+            const dropdownItems = document.querySelectorAll(".dropdown-item");
+
+            dropdownBtn.addEventListener("click", function () {
+                dropdownList.style.display = dropdownList.style.display === "block" ? "none" : "block";
+            });
+
+            dropdownItems.forEach(item => {
+                item.addEventListener("click", function () {
+                    dropdownBtn.textContent = this.textContent;
+                    dropdownList.style.display = "none";
+                });
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!dropdownBtn.contains(e.target) && !dropdownList.contains(e.target)) {
+                    dropdownList.style.display = "none";
+                }
+            });
+        });
+    </script>
+
+    <style>
+
+        .payment-options-container {
+            max-width: 855px;
+            margin: auto;
+            margin-top: 25px;
+            margin-left: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .payment-options-container h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #e6e6ff;
+            padding: 15px;
+            position: relative;
+        }
+
+        .option-group label {
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-group input[type="radio"] {
+            display: none;
+        }
+
+        .option-group input[type="radio"] + label::before {
+            content: '';
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 2px solid #aaa;
+            margin-right: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .option-group input[type="radio"]:checked + label::before {
+            border-color: blue;
+            background-color: blue;
+            box-shadow: inset 0px 0px 0px 2px #fff;
+        }
+
+        .option-icon {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .option-subtext {
+            font-size: 14px;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .installments {
+            display: flex;
+            flex-direction: column;
+            margin-top: 10px;
+        }
+
+        .installment-option {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            background-color: #f7f7f7;
+            border-radius: 6px;
+            margin: 5px 0;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .installment-option:hover {
+            background-color: #eee;
+        }
+
+        .disclaimer {
+            font-size: 13px;
+            color: #6200ea;
+            background-color: #f3f0ff;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+
+    <script>
+        const phoneInput = document.getElementById('phone');
+
+        phoneInput.addEventListener('input', (e) => {
+            if (!phoneInput.value.startsWith('+998')) {
+                phoneInput.value = '+998';
+            }
+            phoneInput.value = phoneInput.value.replace(/[^0-9+]/g, '');
+
+            if (phoneInput.value.length > 13) {
+                phoneInput.value = phoneInput.value.slice(0, 13);
+            }
+        });
+    </script>
+
+    <script>
+        const pickupRadio = document.getElementById('pickup');
+        const courierRadio = document.getElementById('courier');
+        const cityDropdown = document.getElementById('city-dropdown');
+        const deliveryAddressInput = document.getElementById('delivery-address');
+        const courierHeading = document.getElementById('courier-heading');
+
+        function toggleFields() {
+            if (pickupRadio.checked) {
+                cityDropdown.style.display = 'block';
+                deliveryAddressInput.style.display = 'none';
+                courierHeading.style.display = 'none';
+                deliveryAddressInput.removeAttribute('required');
+            } else if (courierRadio.checked) {
+                cityDropdown.style.display = 'none';
+                deliveryAddressInput.style.display = 'block';
+                courierHeading.style.display = 'block';
+                deliveryAddressInput.setAttribute('required', 'required');
+            }
+        }
+
+        pickupRadio.addEventListener('change', toggleFields);
+        courierRadio.addEventListener('change', toggleFields);
+
+        toggleFields();
+    </script>
+
+
+{% endblock %}

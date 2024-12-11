@@ -1,0 +1,153 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <main>
+        <!-- Hero area Start-->
+        <div class="hero-area section-bg2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="slider-area">
+                            <div class="slider-height2 slider-bg4 d-flex align-items-center justify-content-center">
+                                <div class="hero-caption hero-caption2">
+                                    <h2>Blog</h2>
+                                    <nav aria-label="breadcrumb">
+                                        <ol class="breadcrumb justify-content-center">
+                                            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                                            <li class="breadcrumb-item"><a href="{% url 'blog' %}">Blog</a></li>
+                                        </ol>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--  Hero area End -->
+        <!-- Blog Area Start-->
+        <section class="blog_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mb-5 mb-lg-0">
+                        <div class="blog_left_sidebar">
+                            <div class="blog_container">
+                                {% for post in page %}
+                                    <article class="blog_item">
+                                        <div class="blog_item_img">
+                                            <img style="width: 850px; height: 600px" class="card-img rounded-0"
+                                                 src="{{ post.image.url }}"
+                                                 alt="{{ post.title }}">
+                                            <a href="{% url 'blog_details' post.pk %}" class="blog_item_date">
+                                                <h3>{{ post.created_at|date:"d" }}</h3>
+                                                <p>{{ post.created_at|date:"M" }}</p>
+                                            </a>
+                                        </div>
+                                        <div class="blog_details">
+                                            <a class="d-inline-block" href="{% url 'blog_details' post.pk %}">
+                                                <h2 class="blog-head"
+                                                    style="color: #2d2d2d;">{{ post.title|truncatechars:50 }}</h2>
+                                            </a>
+                                            <p>{{ post.description|truncatewords:30 }}</p>
+                                            <ul class="blog-info-link">
+                                                <li>
+                                                    <i class="fa">&#xf02b;</i>
+                                                    {% for tag in post.tags.all %}
+                                                        {{ tag.name }}{% if not forloop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                </li>
+                                                <li>
+                                                    <i class="fa fa-comments"></i>
+                                                    {{ post.comment_set.count }} Comments
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </article>
+                                {% empty %}
+                                    <p>No posts available.</p>
+                                {% endfor %}
+                            </div>
+
+                            <nav class="blog-pagination justify-content-center d-flex">
+                                <ul class="pagination">
+                                    {% if page.has_previous %}
+                                        <li class="page-item">
+                                            <a href="?{% for key, value in request.GET.items %}{% if key != "page" %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page.previous_page_number }}"
+                                               class="page-link"
+                                               aria-label="Previous">
+                                                <i class="ti-angle-left"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for num in page.paginator.page_range %}
+                                        <li class="page-item {% if num == page.number %}active{% endif %}">
+                                            <a href="?{% for key, value in request.GET.items %}{% if key != "page" %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}"
+                                               class="page-link">{{ num }}</a>
+                                        </li>
+                                    {% endfor %}
+                                    {% if page.has_next %}
+                                        <li class="page-item">
+                                            <a href="?{% for key, value in request.GET.items %}{% if key != "page" %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ page.next_page_number }}"
+                                               class="page-link"
+                                               aria-label="Next">
+                                                <i class="ti-angle-right"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="blog_right_sidebar">
+                            <aside class="single_sidebar_widget post_category_widget">
+                                <h4 class="widget_title" style="color: #2d2d2d;">Category</h4>
+                                <ul class="list cat-list">
+                                    {% for i, post_counter in category_post_counts %}
+                                        {% if post_counter %}
+                                            <li>
+                                                <a href="{% url 'blog' %}?cat={{ i.id }}" class="d-flex">
+                                                    <p>{{ i.name }}</p>
+                                                    <p>({{ post_counter }})</p>
+                                                </a>
+                                            </li>
+                                        {% else %}
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </aside>
+                            <aside class="single_sidebar_widget popular_post_widget">
+                                <h3 class="widget_title" style="color: #2d2d2d;">Recent Post</h3>
+                                {% for post in recent_posts %}
+                                    <div class="media post_item">
+                                        <img style="width: 100px; height: 100px" src="{{ post.image.url }}" alt="post">
+                                        <div class="media-body">
+                                            <a href="{% url 'blog_details' post.pk %}">
+                                                <h3 style="color: #2d2d2d;">{{ post.title|truncatechars:25 }}</h3>
+                                            </a>
+                                            <p>{{ post.created_at|date:"F j, Y" }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </aside>
+                            <aside class="single_sidebar_widget tag_cloud_widget">
+                                <h4 class="widget_title" style="color: #2d2d2d;">Tag Clouds</h4>
+                                <ul class="list">
+                                    {% for i in tags %}
+                                        <li>
+                                            <a href="{% url 'blog' %}?tag={{ i.id }}">{{ i.name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Blog Area End -->
+    </main>
+{% endblock %}
